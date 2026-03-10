@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { createItem } = require("../controllers/clothingItem");
+// const { createItem } = require("../controllers/clothingItem");
 const { getUsers, createUser, getUser } = require("../controllers/users");
 
 router.get("/", getUsers);

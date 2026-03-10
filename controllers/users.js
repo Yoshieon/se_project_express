@@ -1,5 +1,5 @@
-const user = require("../models/user");
 const User = require("../models/user");
+const { INTERNAL_SERVER_ERROR } = require("../utils/errors");
 
 // Get /user
 
@@ -8,7 +8,9 @@ const getUsers = (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(INTERNAL_SERVER_ERROR)
+        .send({ message: "An error occured on the server." });
     });
 };
 
@@ -35,10 +37,13 @@ const getUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        // return res.status(400).send({ message: err.message });
+        return res.status(404).send({ message: "User not found" });
       } else if (err.name === "CastError") {
+        return res.status(400).send({ message: "Invalid user ID" });
       }
-      return res.status(500).send({ message: err.message });
+      return res
+        .status(500)
+        .send({ message: "An error has occured on the server." });
     });
 };
 
