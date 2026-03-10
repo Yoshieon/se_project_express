@@ -14,7 +14,7 @@ mongoose
 
 app.use(express.json());
 app.use((req, res, next) => {
-  req.user = { _id: "paste_test_user_id_here" };
+  req.user = { _id: "6903a10e35ea76defcaf0020" };
   next();
 });
 
