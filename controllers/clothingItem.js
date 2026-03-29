@@ -1,7 +1,8 @@
-const ClothingItem = require("../models/clothingItem");
+const ClothingItem = require("../models/clothingitem");
 const {
   BAD_REQUEST,
   NOT_FOUND,
+  FORBIDDEN,
   INTERNAL_SERVER_ERROR,
 } = require("../utils/errors");
 
@@ -57,9 +58,15 @@ const updateItem = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  ClothingItem.findByIdAndDelete(itemId)
+  ClothingItem.findById(itemId)
     .orFail()
-    .then((item) => res.send(item))
+    .then((item) => {
+      if (item.owner.toString() !== req.user._id) {
+        return res.status(FORBIDDEN).send({ message: "Forbidden: not the owner" });
+      }
+      return ClothingItem.findByIdAndDelete(itemId)
+        .then((deletedItem) => res.send(deletedItem));
+    })
     .catch((e) => {
       if (e.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });

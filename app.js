@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const mainRouter = require("./routes/index");
+const { login, createUser } = require("./controllers/users");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -12,11 +14,12 @@ mongoose
   })
   .catch(console.error);
 
+app.use(cors());
 app.use(express.json());
-app.use((req, res, next) => {
-  req.user = { _id: "6903a10e35ea76defcaf0020" };
-  next();
-});
+app.use(require("./middlewares/auth"));
+
+app.post("/signin", login); // For existing users to log in
+app.post("/signup", createUser); // For new users to create accounts
 
 app.use("/", mainRouter);
 
