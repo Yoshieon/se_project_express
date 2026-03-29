@@ -9,18 +9,6 @@ const {
 } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
-// GET /users
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      console.error(err);
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error occured on the server." });
-    });
-};
-
 // POST /signup
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
@@ -41,7 +29,7 @@ const createUser = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error occured on the server." });
+        .send({ message: "An error occurred on the server." });
     });
 };
 
@@ -59,11 +47,15 @@ const login = (req, res) => {
     .select("+password")
     .then((user) => {
       if (!user) {
-        return res.status(UNAUTHORIZED).send({ message: "Incorrect email or password" });
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
       }
       return user.comparePassword(password).then((isMatch) => {
         if (!isMatch) {
-          return res.status(UNAUTHORIZED).send({ message: "Incorrect email or password" });
+          return res
+            .status(UNAUTHORIZED)
+            .send({ message: "Incorrect email or password" });
         }
 
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
@@ -77,7 +69,7 @@ const login = (req, res) => {
       console.error(err);
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server." });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -96,7 +88,7 @@ const getCurrentUser = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server." });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -123,7 +115,7 @@ const updateUser = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server." });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -143,12 +135,11 @@ const getUser = (req, res) => {
       }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server." });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
 module.exports = {
-  getUsers,
   createUser,
   login,
   getUser,

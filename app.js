@@ -16,7 +16,6 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-app.use(require("./middlewares/auth"));
 
 app.post("/signin", login); // For existing users to log in
 app.post("/signup", createUser); // For new users to create accounts

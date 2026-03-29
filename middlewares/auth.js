@@ -2,23 +2,7 @@ const jwt = require("jsonwebtoken");
 const { UNAUTHORIZED } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
-const openRoute = (req) => {
-  const publicPaths = [
-    { path: "/signin", method: "POST" },
-    { path: "/signup", method: "POST" },
-    { path: "/items", method: "GET" },
-  ];
-
-  return publicPaths.some(
-    (route) => route.path === req.path && route.method === req.method
-  );
-};
-
 module.exports = (req, res, next) => {
-  if (openRoute(req)) {
-    return next();
-  }
-
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {

@@ -1,4 +1,4 @@
-const ClothingItem = require("../models/clothingitem");
+const ClothingItem = require("../models/clothingItem");
 const {
   BAD_REQUEST,
   NOT_FOUND,
@@ -21,7 +21,7 @@ const createItem = (req, res) => {
       }
       res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server" });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -31,7 +31,7 @@ const getItems = (req, res) => {
     .catch((err) => {
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occured on the server." });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -62,10 +62,13 @@ const deleteItem = (req, res) => {
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
-        return res.status(FORBIDDEN).send({ message: "Forbidden: not the owner" });
+        return res
+          .status(FORBIDDEN)
+          .send({ message: "Forbidden: not the owner" });
       }
-      return ClothingItem.findByIdAndDelete(itemId)
-        .then((deletedItem) => res.send(deletedItem));
+      return ClothingItem.findByIdAndDelete(itemId).then((deletedItem) =>
+        res.send(deletedItem)
+      );
     })
     .catch((e) => {
       if (e.name === "CastError") {
