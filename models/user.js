@@ -33,8 +33,7 @@ const userScheme = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
-    select: false, // Don't include password in queries by default
+    select: false,
   },
 });
 
@@ -50,6 +49,27 @@ userScheme.pre("save", async function hashPassword(next) {
     return next(error);
   }
 });
+
+userScheme.statics.findUserByCredentials = function findUserByCredentials(
+  email,
+  password
+) {
+  return this.findOne({ email })
+    .select("+password")
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error("Invalid email or password"));
+      }
+
+      return bcrypt.compare(password, user.password).then((isMatch) => {
+        if (!isMatch) {
+          return Promise.reject(new Error("Invalid email or password"));
+        }
+
+        return user;
+      });
+    });
+};
 
 userScheme.methods.comparePassword = async function comparePassword(
   candidatePassword

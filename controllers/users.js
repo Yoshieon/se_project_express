@@ -43,33 +43,20 @@ const login = (req, res) => {
       .send({ message: "Email and password are required" });
   }
 
-  User.findOne({ email })
-    .select("+password")
+  return User.findUserByCredentials(email, password) // Model handles the logic
     .then((user) => {
-      if (!user) {
-        return res
-          .status(UNAUTHORIZED)
-          .send({ message: "Incorrect email or password" });
-      }
-      return user.comparePassword(password).then((isMatch) => {
-        if (!isMatch) {
-          return res
-            .status(UNAUTHORIZED)
-            .send({ message: "Incorrect email or password" });
-        }
-
-        const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-          expiresIn: "7d",
-        });
-
-        return res.send({ token });
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
       });
+      return res.send({ token });
     })
     .catch((err) => {
-      console.error(err);
+      if (err.message === "Invalid email or password") {
+        return res.status(UNAUTHORIZED).send({ message: err.message });
+      }
       return res
         .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server." });
+        .send({ message: "Server error" });
     });
 };
 

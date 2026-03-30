@@ -5,6 +5,7 @@ const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
 
 const app = express();
+app.use(require("./middlewares/auth"));
 const { PORT = 3001 } = process.env;
 
 mongoose
