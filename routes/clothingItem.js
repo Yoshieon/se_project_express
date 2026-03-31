@@ -9,27 +9,27 @@ const {
   dislikeClothingItem,
 } = require("../controllers/clothingItem");
 
-//CRUD
+// CRUD
 
-//Read
+// Read
 router.get("/", getItems);
 
 // Auth required for the rest
 router.use(require("../middlewares/auth"));
 
-//Create
+// Create
 router.post("/", createItem);
 
-//Update
+// Update
 router.put("/:itemId", updateItem);
 
-//Delete
+// Delete
 router.delete("/:itemId", deleteItem);
 
-//Like
+// Like
 router.put("/:itemId/likes", likeClothingItem);
 
-//Dislike
+// Dislike
 router.delete("/:itemId/likes", dislikeClothingItem);
 
 module.exports = router;

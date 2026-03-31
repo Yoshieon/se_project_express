@@ -19,7 +19,7 @@ const createItem = (req, res) => {
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
@@ -28,11 +28,8 @@ const createItem = (req, res) => {
 const getItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
-    .catch((err) => {
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server." });
-    });
+    .catch(() =>
+      res.status(INTERNAL_SERVER_ERROR).send({ message: "An error has occurred on the server." }));
 };
 
 const updateItem = (req, res) => {
@@ -49,7 +46,7 @@ const updateItem = (req, res) => {
       if (e.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
@@ -77,7 +74,7 @@ const deleteItem = (req, res) => {
       if (e.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
@@ -100,7 +97,7 @@ const likeClothingItem = (req, res) => {
       if (e.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
@@ -123,7 +120,7 @@ const dislikeClothingItem = (req, res) => {
       if (e.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res
+      return res
         .status(INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });

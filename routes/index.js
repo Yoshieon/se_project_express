@@ -3,6 +3,7 @@ const { NOT_FOUND } = require("../utils/errors");
 const clothingItem = require("./clothingItem");
 
 const userRouter = require("./users");
+
 router.use("/items", clothingItem);
 router.use("/users", userRouter);
 
