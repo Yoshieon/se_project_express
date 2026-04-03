@@ -1,7 +1,7 @@
 # WTWR (What to Wear?): Back End
 The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
 
-Project Pitch Video Sprint 13: 
+Project Pitch Video Sprint 13: [Sprint project 13](https://www.loom.com/share/977919adff9c47488e70531fdf48e3b0) - This talks about the project is about and how it would be used in the future for logging in and signing up an application. 
 
 
 ## Running the Project
