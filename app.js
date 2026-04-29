@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
+require("dotenv").config();
 
 const app = express();
 
@@ -18,4 +19,6 @@ app.post("/signup", createUser); // For new users to create accounts
 
 app.use("/", mainRouter);
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`);
+});
