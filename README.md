@@ -3,7 +3,7 @@ The back-end project is focused on creating a server for the WTWR application. Y
 
 Project Pitch Video Sprint 13: [Sprint project 13](https://www.loom.com/share/977919adff9c47488e70531fdf48e3b0) - This talks about the project is about and how it would be used in the future for logging in and signing up an application. 
 
-Project Pitch Video Sprint 15: [Sprint project 15]() - This talks about and how the project is being operated for both frontend and backend including it's own link. 
+Project Pitch Video Sprint 15: [Sprint project 15](https://drive.google.com/file/d/1MLSwrUI4ui7C3f3PLM1pvypgeN8jn-Oi/view?usp=drive_link) - This talks about and how the project is being operated for both frontend and backend including it's own link. 
 
 
 ## Running the Project
