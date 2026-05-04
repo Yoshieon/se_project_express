@@ -1,16 +1,16 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const {
-  BAD_REQUEST,
-  UNAUTHORIZED,
-  CONFLICT,
-  NOT_FOUND,
-  INTERNAL_SERVER_ERROR,
+  ERROR_CODES,
+  BadRequestError,
+  UnauthorizedError,
+  ConflictError,
+  NotFoundError,
 } = require("../utils/errors");
 const { JWT_SECRET } = require("../utils/config");
 
 // POST /signup
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   User.create({ name, avatar, email, password })
@@ -22,25 +22,21 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user data" });
+        next(new BadRequestError("Invalid user data"));
+      } else if (err.code === 11000) {
+        next(new ConflictError("Email already exists"));
+      } else {
+        next(err);
       }
-      if (err.code === 11000) {
-        return res.status(CONFLICT).send({ message: "Email already exists" });
-      }
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error occurred on the server." });
     });
 };
 
 // POST /signin
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(BAD_REQUEST)
-      .send({ message: "Email and password are required" });
+    return next(new BadRequestError("Email and password are required"));
   }
 
   return User.findUserByCredentials(email, password) // Model handles the logic
@@ -52,35 +48,32 @@ const login = (req, res) => {
     })
     .catch((err) => {
       if (err.message === "Invalid email or password") {
-        return res.status(UNAUTHORIZED).send({ message: err.message });
+        next(new UnauthorizedError(err.message));
+      } else {
+        next(err);
       }
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "Server error" });
     });
 };
 
 // GET /users/me
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "User not found" });
+        next(new NotFoundError("User not found"));
+      } else if (err.name === "CastError") {
+        next(new BadRequestError("Invalid user ID"));
+      } else {
+        next(err);
       }
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user ID" });
-      }
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server." });
     });
 };
 
 // PATCH /users/me
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -92,22 +85,19 @@ const updateUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user data" });
+        next(new BadRequestError("Invalid user data"));
+      } else if (err.name === "DocumentNotFoundError") {
+        next(new NotFoundError("User not found"));
+      } else if (err.name === "CastError") {
+        next(new BadRequestError("Invalid user ID"));
+      } else {
+        next(err);
       }
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "User not found" });
-      }
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user ID" });
-      }
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server." });
     });
 };
 
 // GET /users/:userId
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const { userId } = req.params;
   User.findById(userId)
     .orFail()
@@ -115,14 +105,12 @@ const getUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "User not found" });
+        next(new NotFoundError("User not found"));
+      } else if (err.name === "CastError") {
+        next(new BadRequestError("Invalid user ID"));
+      } else {
+        next(err);
       }
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: "Invalid user ID" });
-      }
-      return res
-        .status(INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server." });
     });
 };
 
