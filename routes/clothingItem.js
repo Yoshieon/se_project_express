@@ -18,7 +18,7 @@ router.get("/", getItems);
 router.use(require("../middlewares/auth"));
 
 // Create
-router.post("/", createItem);
+router.post("/", validateClothingItem, createClothingItem);
 
 // Update
 router.put("/:itemId", updateItem);

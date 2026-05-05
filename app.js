@@ -1,11 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { errors } = require('celebrate');
+const { errors } = require("celebrate");
 const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
-const errorHandler = require('./middlewares/error-handler');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorHandler = require("./middlewares/error-handler");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 require("dotenv").config();
 
 const app = express();
@@ -18,9 +18,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use(requestLogger);
-
-app.post("/signin", login); // For existing users to log in
-app.post("/signup", createUser); // For new users to create accounts
 
 app.use("/", mainRouter);
 

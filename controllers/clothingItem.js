@@ -3,7 +3,7 @@ const {
   ERROR_CODES,
   BadRequestError,
   NotFoundError,
-} = require("../utils/errors");
+} = require("../utils/constants");
 
 const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
