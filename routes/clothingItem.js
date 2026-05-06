@@ -18,18 +18,15 @@ router.get("/", getItems);
 router.use(require("../middlewares/auth"));
 
 // Create
-router.post("/", validateClothingItem, createClothingItem);
-
-// Update
-router.put("/:itemId", updateItem);
+router.post("/", validateCardBody, createClothingItem);
 
 // Delete
-router.delete("/:itemId", deleteItem);
+router.delete("/:itemId", validateItemId, deleteItem);
 
 // Like
-router.put("/:itemId/likes", likeClothingItem);
+router.put("/:itemId/likes", validateItemId, likeClothingItem);
 
 // Dislike
-router.delete("/:itemId/likes", dislikeClothingItem);
+router.delete("/:itemId/likes", validateItemId, dislikeClothingItem);
 
 module.exports = router;

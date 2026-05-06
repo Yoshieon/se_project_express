@@ -6,7 +6,7 @@ const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
-  return helpers.error('string.uri');
+  return helpers.error("string.uri");
 };
 
 // Validation for clothing item creation
@@ -21,6 +21,7 @@ const validateCardBody = celebrate({
       "string.empty": 'The "imageUrl" field must be filled in',
       "string.uri": 'the "imageUrl" field must be a valid url',
     }),
+    weather: Joi.string().valid("hot", "warm", "cold").required(),
   }),
 });
 
@@ -79,10 +80,23 @@ const validateUserId = celebrate({
   }),
 });
 
+const validateUserUpdate = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+    }),
+    avatar: Joi.string().custom(validateURL).messages({
+      "string.uri": 'The "avatar" field must be a valid URL',
+    }),
+  }),
+});
+
 module.exports = {
   validateCardBody,
   validateUserBody,
   validateAuthBody,
   validateItemId,
   validateUserId,
+  validateUserUpdate,
 };
