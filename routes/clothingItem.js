@@ -3,11 +3,11 @@ const router = require("express").Router();
 const {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
   likeClothingItem,
   dislikeClothingItem,
 } = require("../controllers/clothingItem");
+const { validateCardBody, validateItemId } = require("../middlewares/validation");
 
 // CRUD
 
@@ -18,7 +18,7 @@ router.get("/", getItems);
 router.use(require("../middlewares/auth"));
 
 // Create
-router.post("/", validateCardBody, createClothingItem);
+router.post("/", validateCardBody, createItem);
 
 // Delete
 router.delete("/:itemId", validateItemId, deleteItem);

@@ -1,8 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { UNAUTHORIZED } = require("../utils/constants");
 const { JWT_SECRET } = require("../utils/config");
-const { Joi, celebrate } = require("celebrate");
-const validator = require("validator");
 const UnauthorizedError = require("../errors/unauthorized-error");
 
 module.exports = (req, res, next) => {
@@ -23,5 +20,5 @@ module.exports = (req, res, next) => {
   }
 
   req.user = payload;
-  next();
+  return next();
 };
