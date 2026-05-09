@@ -70,6 +70,22 @@ const validateItemId = celebrate({
   }),
 });
 
+const validateUserSignup = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+    name: Joi.string().min(2).max(30).required(),
+    avatar: Joi.string().uri().optional(),
+  }),
+});
+
+const validateUserSignin = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+});
+
 // Validation for MongoDB user ID in parameters
 const validateUserId = celebrate({
   params: Joi.object().keys({
@@ -99,4 +115,6 @@ module.exports = {
   validateItemId,
   validateUserId,
   validateUserUpdate,
+  validateUserSignup,
+  validateUserSignin,
 };
