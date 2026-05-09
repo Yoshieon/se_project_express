@@ -11,8 +11,10 @@ Project Pitch Video Sprint 15: [Sprint project 15](https://drive.google.com/file
 
 `npm run dev` — to launch the server with the hot reload feature
 
-## Deployed Application
+## Deployed Applications
 (https://wtwr-ttsprint.jumpingcrab.com)
+(https://www.wtwr-ttsprint.jumpingcrab.com/)
+(https://api.wtwr-ttsprint.jumpingcrab.com/)
 
 ### Testing
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
