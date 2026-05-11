@@ -115,6 +115,4 @@ module.exports = {
   validateItemId,
   validateUserId,
   validateUserUpdate,
-  validateUserSignup,
-  validateUserSignin,
 };
